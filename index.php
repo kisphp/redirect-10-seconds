@@ -6,12 +6,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <style>
-body {
-    padding-top: 60px;
-}
-.jumbotron h1 {
-    font-size: 40px;
-}
+body { padding-top: 60px; }
+.jumbotron h1 { font-size: 40px; }
 </style>
 <body>
 
@@ -30,26 +26,46 @@ body {
 <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script>
+function TimeCounter() {
+    var self = this;
+    self.website = 'http://www.kisphp.com';
 
-    function timer() {
+    self.getNextValue = function(){
         var value = $('#timer').html();
-        var newValue = parseInt(value) - 1;
 
-        $('#timer').html(newValue);
+        return parseInt(value) - 1;
+    };
+
+    self.updateValue = function(newValue){
         if (newValue < 3) {
             $('#timer').addClass('text-danger');
         }
-        if (newValue == 0) {
-            window.location = 'http://www.kisphp.com';
-            return false;
+        $('#timer').html(newValue);
+    };
+
+    self.doRedirect = function(){
+        window.location = self.website;
+    };
+
+    self.run = function(){
+        var newValue = self.getNextValue();
+        self.updateValue(newValue);
+
+        if (newValue < 1) {
+            return self.doRedirect();
         }
 
-        setTimeout("timer()", 1000);
-    }
+        setTimeout(function(){
+            self.run();
+        }, 1000);
+    };
+}
 
-    $(function(){
-        timer();
-    });
+var timer = new TimeCounter();
+
+$(function(){
+    timer.run();
+});
 </script>
 </body>
 </html>
